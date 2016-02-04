@@ -1,25 +1,15 @@
 var express = require('express');
+// require my custom middleware
+var middleware = require('./middleware.js');
 var app = express();
 var PORT = 3000;
-
-// define some custom middleware
-var middleware = {
-  requireAuthentication: function(req, res, next) {
-    console.log('private route hit!');
-    next();
-  },
-  logger: function(req, res, next) {
-    console.log('Request: ' + new Date().toString() + ' ' + req.method + ' ' + req.originalUrl);
-    next();
-  }
-};
 
 // use middleware.logger on every request
 app.use(middleware.logger);
 
 // use middleware.requireAuthentication only on calls to this route
 app.get('/about', middleware.requireAuthentication, function(req, res) {
-  res.send("It's all about us");
+  res.send("It's all about us!");
 });
 
 // expose public folder using Node's __dirname shortcut
